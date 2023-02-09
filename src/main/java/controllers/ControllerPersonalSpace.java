@@ -2,7 +2,7 @@ package controllers;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -33,7 +33,6 @@ public class ControllerPersonalSpace extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			
 			String email = request.getParameter("txtEmail");
 			String password = request.getParameter("txtPassword");
 			if(service.IsCustomerInfoValid(email, password)) {
@@ -42,7 +41,8 @@ public class ControllerPersonalSpace extends HttpServlet {
 				session.setAttribute("pseudonyme",pseudonyme);
 				session.setAttribute("email",email);
 				//Récupère toutes les annonces lié au Client(customer) à l'adresse mail(email) dans une liste : 
-				ArrayList<Announcement> listAnnoncementConnectedCustomer = (ArrayList<Announcement>) service.getAllAnnoucementByIdCustomer(service.getCustomerIdByEmail(email) );
+				
+				List<Announcement> listAnnoncementConnectedCustomer = service.getAllAnnoucementByIdCustomer(service.getCustomerIdByEmail(email) );
 				session.setAttribute("listAnnoncementConnectedCustomer", listAnnoncementConnectedCustomer );
 				request.getRequestDispatcher("PersonalSpaceView.jsp").forward(request, response);
 				//request.getRequestDispatcher("controllerpersonalspace").forward(request, response);

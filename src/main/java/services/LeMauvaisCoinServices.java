@@ -19,7 +19,6 @@ public class LeMauvaisCoinServices {
 		Connection con = UtileConnexion.toConnect();				//lance 'se connecter'	
 		String query = "	SELECT * FROM Announcements;		";			//description de la query à lancer sur la database
 		ResultSet rs = con.createStatement().executeQuery(query);	//exécute la query
-		
 		while(rs.next() ) {											//récupère les infos de la database
 			int id = rs.getInt("id");
 			String title = rs.getString("title");
@@ -30,6 +29,7 @@ public class LeMauvaisCoinServices {
 			
 			listAll.add( new Announcement(id, title, price, type, description, idCustomer) );
 		}
+		con.close();
 		return listAll;
 	}
 	
@@ -40,8 +40,7 @@ public class LeMauvaisCoinServices {
 		String query = "	SELECT * FROM Announcements WHERE type=?;	";			//description de la query à lancer sur la database
 		PreparedStatement preparedStatement = con.prepareStatement(query);
 		preparedStatement.setString(1, typeIn);
-		ResultSet rs = con.createStatement().executeQuery(query);	//exécute la query
-		
+		ResultSet rs = preparedStatement.executeQuery();	//exécute la query
 		while(rs.next() ) {											//récupère les infos de la database
 			int id = rs.getInt("id");
 			String title = rs.getString("title");
@@ -49,9 +48,10 @@ public class LeMauvaisCoinServices {
 			String type = rs.getString("type");
 			String description = rs.getString("description");
 			int idCustomer = rs.getInt("id_customer");
-			preparedStatement.close();
 			listAll.add( new Announcement(id, title, price, type, description, idCustomer) );
 		}
+		preparedStatement.close();
+		con.close();
 		return listAll;
 	}
 	
@@ -62,7 +62,7 @@ public class LeMauvaisCoinServices {
 		String query = "	SELECT * FROM Announcements WHERE id_customer=?;	";			//description de la query à lancer sur la database
 		PreparedStatement preparedStatement = con.prepareStatement(query);
 		preparedStatement.setInt(1, idIn);
-		ResultSet rs = con.createStatement().executeQuery(query);	//exécute la query
+		ResultSet rs = preparedStatement.executeQuery();	//exécute la query
 		while(rs.next() ) {											//récupère les infos de la database
 			int id = rs.getInt("id");
 			String title = rs.getString("title");
@@ -70,9 +70,10 @@ public class LeMauvaisCoinServices {
 			String type = rs.getString("type");
 			String description = rs.getString("description");
 			int idCustomer = rs.getInt("id_customer");
-			preparedStatement.close();
 			listAll.add( new Announcement(id, title, price, type, description, idCustomer) );
 		}
+		preparedStatement.close();
+		con.close();
 		return listAll;
 	}
 	
@@ -100,7 +101,7 @@ public class LeMauvaisCoinServices {
 	
 	public void addAnnouncement(Announcement ann)throws SQLException {
 		Connection con = UtileConnexion.toConnect();
-		String query = "	INSERT INTO Announcements (title, price, type, description, idCustomer) VALUES (?, ?, ?, ?, ?)	";
+		String query = "	INSERT INTO Announcements (title, price, type, description, id_customer) VALUES (?, ?, ?, ?, ?);	";
 		PreparedStatement preparedStatement = con.prepareStatement(query);
 		preparedStatement.setString(1, ann.getTitle());
 		preparedStatement.setFloat(2, ann.getPrice());
@@ -137,7 +138,7 @@ public class LeMauvaisCoinServices {
 		preparedStatement.executeUpdate();
 		preparedStatement.close();
 		con.close();
-		System.out.println("connection close");
+		//System.out.println("connection close");
 	}
 	
 	
@@ -222,10 +223,20 @@ public class LeMauvaisCoinServices {
 			preparedStatement.close();
 			con.close();
 			//System.out.println("connection close");
+			//System.out.println("trouvé : "+id);
 			return id;
 		}
+		System.out.println("erreur : pas trouvé");
 		return -1;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

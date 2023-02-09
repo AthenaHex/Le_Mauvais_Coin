@@ -11,11 +11,8 @@
 		<title>Bienvenue</title>
 	</head>
 	<body>
-		
 		<h2>Bienvenue :  ${pseudonyme} </h2>>
-		
-		
-		<tbody>
+			<tbody>
 				<% LeMauvaisCoinServices service = new LeMauvaisCoinServices(); %>
 				<% ArrayList<Announcement> listAnnoncementConnectedCustomer = (ArrayList<Announcement>) session.getAttribute("listAnnoncementConnectedCustomer"); %>
 				<% for ( Announcement ann : listAnnoncementConnectedCustomer ) {%>
@@ -24,12 +21,12 @@
 					<td> <%= ann.getPrice() %> </td>
 					<td> <%= ann.getType() %> </td>
 					<td> <%= ann.getDescription() %> </td>
-					<td> <%= service.getCustomerPseudonymeById(ann.getIdCustomer()) %> </td>	<!-- afficher le nom du Custom et pas son id       -->
+					<a href=''>Modify</a>
 				</tr>
 				<% }%>
 			</tbody>
 		
-		
+		<a href='controllercreateannouncement'>Create announcement</a>
 		
 		
 		<!--service.getAllAnnoucementByIdCustomer(service.getCustomerIdByEmail(String emailIn)) -->
